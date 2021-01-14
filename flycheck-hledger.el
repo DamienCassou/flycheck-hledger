@@ -25,6 +25,7 @@
 ;;; Code:
 
 (require 'flycheck)
+(require 'ledger-mode)
 
 (flycheck-define-checker hledger
   "A checker for hledger journals, showing unmatched balances and failed checks."
