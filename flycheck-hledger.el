@@ -37,6 +37,14 @@
 See URL https://hledger.org/hledger.html#strict-mode"
   :type 'boolean)
 
+(flycheck-def-option-var flycheck-hledger-checks nil hledger
+  "List of additional checks to run.
+
+Checks include: accounts, commodities, ordereddates, payees and
+uniqueleafnames. More information at URL
+https://hledger.org/hledger.html#check."
+  :type '(repeat string))
+
 (flycheck-define-checker hledger
   "A checker for hledger journals, showing unmatched balances and failed checks."
   :command ("hledger"
@@ -44,8 +52,7 @@ See URL https://hledger.org/hledger.html#strict-mode"
             "--auto"
             "check"
             (option-flag "--strict" flycheck-hledger-strict)
-            "payees"
-            "ordereddates")
+            (eval flycheck-hledger-checks))
   ;; Activate the checker only if ledger-binary-path ends with "hledger":
   :predicate (lambda () (and (bound-and-true-p ledger-binary-path)
                         (string-suffix-p "hledger" (file-name-nondirectory ledger-binary-path))))
