@@ -31,6 +31,12 @@
 
 (require 'flycheck)
 
+(flycheck-def-option-var flycheck-hledger-strict nil hledger
+  "Whether to enable strict mode.
+
+See URL https://hledger.org/hledger.html#strict-mode"
+  :type 'boolean)
+
 (flycheck-define-checker hledger
   "A checker for hledger journals, showing unmatched balances and failed checks."
   :command ("hledger"
@@ -71,12 +77,6 @@
           (message (zero-or-more line-start (zero-or-more not-newline) "\n")) "\n"))
   :error-parser flycheck-parse-with-patterns
   :modes (ledger-mode hledger-mode))
-
-(flycheck-def-option-var flycheck-hledger-strict nil hledger
-  "Whether to enable strict mode.
-
-See URL https://hledger.org/hledger.html#strict-mode"
-  :type 'boolean)
 
 (add-to-list 'flycheck-checkers 'hledger)
 
