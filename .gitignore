@@ -1,0 +1,4 @@
+*.elc
+*~
+flycheck-hledger-autoloads.el
+/makel.mk

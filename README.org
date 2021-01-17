@@ -1,0 +1,46 @@
+* flycheck-hledger
+
+  #+BEGIN_HTML
+        <a href="https://github.com/DamienCassou/flycheck-hledger/actions">
+          <img alt="pipeline status" src="https://github.com/DamienCassou/flycheck-hledger/workflows/CI/badge.svg" />
+        </a>
+      </p>
+  #+END_HTML
+
+** Summary
+
+This package is a [[https://www.flycheck.org/en/latest/][flycheck]] checker for [[https://hledger.org][hledger]] files.
+
+** Installing
+
+Add the following to your initialization file:
+
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'load-path "~/.emacs.d/lib/flycheck-hledger/")
+  (require 'flycheck-hledger)
+#+END_SRC
+
+If you have both [[https://github.com/purcell/flycheck-ledger][flycheck-ledger]] and flycheck-hledger installed, set
+`flycheck-disabled-checkers` to `(ledger)` locally (e.g., through a
+file local variable) in your hledger files to deactivate
+`flycheck-ledger`.
+
+** Configuration
+
+The table below summarizes the available options. You can use ~M-x
+customize-group RET flycheck-options RET~ to change them.
+
+| *Option*                  | *Description*                           |
+|---------------------------+-----------------------------------------|
+| ~flycheck-hledger-strict~ | A boolean activating the [[https://hledger.org/hledger.html#strict-checks][strict checks]]. |
+| ~flycheck-hledger-checks~ | A list of strings for [[https://hledger.org/hledger.html#check][additional checks]]. |
+
+** License
+
+See [[file:COPYING][COPYING]]. Copyright (c) 2020-2021 Damien Cassou.
+
+  #+BEGIN_HTML
+  <a href="https://liberapay.com/DamienCassou/donate">
+    <img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg">
+  </a>
+  #+END_HTML

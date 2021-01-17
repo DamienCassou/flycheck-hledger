@@ -1,8 +1,11 @@
 ;;; flycheck-hledger.el --- Flycheck module to check hledger journals  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2020  Damien Cassou
+;; Copyright (C) 2020-2021  Damien Cassou
 
 ;; Author: Damien Cassou <damien@cassou.me>
+;; Url: https://github.com/DamienCassou/flycheck-hledger/
+;; Package-requires: ((emacs "27.1") (flycheck "31"))
+;; Version: 0.1.0
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -19,12 +22,28 @@
 
 ;;; Commentary:
 
-;; Adapted from flycheck-ledger by Steve Purcell
-;; (https://github.com/purcell/flycheck-ledger).
+;; This package is a flycheck [1] checker for hledger files [2].
+;;
+;; [1] https://www.flycheck.org/en/latest/
+;; [2] https://hledger.org/
 
 ;;; Code:
 
 (require 'flycheck)
+
+(flycheck-def-option-var flycheck-hledger-strict nil hledger
+  "Whether to enable strict mode.
+
+See URL https://hledger.org/hledger.html#strict-mode"
+  :type 'boolean)
+
+(flycheck-def-option-var flycheck-hledger-checks nil hledger
+  "List of additional checks to run.
+
+Checks include: accounts, commodities, ordereddates, payees and
+uniqueleafnames. More information at URL
+https://hledger.org/hledger.html#check."
+  :type '(repeat string))
 
 (flycheck-define-checker hledger
   "A checker for hledger journals, showing unmatched balances and failed checks."
@@ -33,9 +52,10 @@
             "--auto"
             "check"
             (option-flag "--strict" flycheck-hledger-strict)
-            "payees"
-            "ordereddates")
-  :predicate (lambda () (string= (file-name-nondirectory ledger-binary-path) "hledger"))
+            (eval flycheck-hledger-checks))
+  ;; Activate the checker only if ledger-binary-path ends with "hledger":
+  :predicate (lambda () (and (bound-and-true-p ledger-binary-path)
+                        (string-suffix-p "hledger" (file-name-nondirectory ledger-binary-path))))
   ;; A dedicated filter is necessary because hledger reports some errors with no line number:
   :error-filter (lambda (errors) (flycheck-sanitize-errors (flycheck-fill-empty-line-numbers errors)))
   :error-patterns
@@ -64,12 +84,6 @@
           (message (zero-or-more line-start (zero-or-more not-newline) "\n")) "\n"))
   :error-parser flycheck-parse-with-patterns
   :modes (ledger-mode hledger-mode))
-
-(flycheck-def-option-var flycheck-hledger-strict nil hledger
-  "Whether to enable strict mode.
-
-See URL https://hledger.org/hledger.html#strict-mode"
-  :type 'boolean)
 
 (add-to-list 'flycheck-checkers 'hledger)
 
