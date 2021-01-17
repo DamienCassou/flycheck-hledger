@@ -21,9 +21,9 @@ Add the following to your initialization file:
 #+END_SRC
 
 If you have both [[https://github.com/purcell/flycheck-ledger][flycheck-ledger]] and flycheck-hledger installed, set
-`flycheck-disabled-checkers` to `(ledger)` locally (e.g., through a
+~flycheck-disabled-checkers~ to ~(ledger)~ locally (e.g., through a
 file local variable) in your hledger files to deactivate
-`flycheck-ledger`.
+~flycheck-ledger~.
 
 ** Configuration
 
