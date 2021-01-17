@@ -30,7 +30,6 @@
 ;;; Code:
 
 (require 'flycheck)
-(require 'ledger-mode)
 
 (flycheck-define-checker hledger
   "A checker for hledger journals, showing unmatched balances and failed checks."
@@ -41,7 +40,9 @@
             (option-flag "--strict" flycheck-hledger-strict)
             "payees"
             "ordereddates")
-  :predicate (lambda () (string= (file-name-nondirectory ledger-binary-path) "hledger"))
+  ;; Activate the checker only if ledger-binary-path ends with "hledger":
+  :predicate (lambda () (and (bound-and-true-p ledger-binary-path)
+                        (string-suffix-p "hledger" (file-name-nondirectory ledger-binary-path))))
   ;; A dedicated filter is necessary because hledger reports some errors with no line number:
   :error-filter (lambda (errors) (flycheck-sanitize-errors (flycheck-fill-empty-line-numbers errors)))
   :error-patterns
