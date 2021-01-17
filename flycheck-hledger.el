@@ -1,6 +1,6 @@
 ;;; flycheck-hledger.el --- Flycheck module to check hledger journals  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2020  Damien Cassou
+;; Copyright (C) 2020-2021  Damien Cassou
 
 ;; Author: Damien Cassou <damien@cassou.me>
 
