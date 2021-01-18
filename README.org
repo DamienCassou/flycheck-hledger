@@ -1,11 +1,6 @@
 * flycheck-hledger
-
-  #+BEGIN_HTML
-        <a href="https://github.com/DamienCassou/flycheck-hledger/actions">
-          <img alt="pipeline status" src="https://github.com/DamienCassou/flycheck-hledger/workflows/CI/badge.svg" />
-        </a>
-      </p>
-  #+END_HTML
+[[https://melpa.org/#/flycheck-hledger][file:https://melpa.org/packages/flycheck-hledger-badge.svg]]
+[[https://github.com/DamienCassou/flycheck-hledger/actions][file:https://github.com/DamienCassou/flycheck-hledger/workflows/CI/badge.svg]]
 
 ** Summary
 
