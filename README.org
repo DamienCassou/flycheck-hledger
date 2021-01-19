@@ -1,19 +1,41 @@
 * flycheck-hledger
 [[https://melpa.org/#/flycheck-hledger][file:https://melpa.org/packages/flycheck-hledger-badge.svg]]
+[[https://stable.melpa.org/#/flycheck-hledger][file:https://stable.melpa.org/packages/flycheck-hledger-badge.svg]]
 [[https://github.com/DamienCassou/flycheck-hledger/actions][file:https://github.com/DamienCassou/flycheck-hledger/workflows/CI/badge.svg]]
 
 ** Summary
 
-This package is a [[https://www.flycheck.org/en/latest/][flycheck]] checker for [[https://hledger.org][hledger]] files.
+This package is a [[https://www.flycheck.org/en/latest/][flycheck]] checker for [[https://hledger.org][hledger]] files. It is tested
+with a fairly recent version of hledger (closely following the main
+branch of the git repository). If the package doesn't work for your
+version of hledger, try to update it and [[https://github.com/DamienCassou/flycheck-hledger/issues/new][open an issue]] if it still
+doesn't work.
 
 ** Installing
 
-Add the following to your initialization file:
+You first need to [[https://www.flycheck.org/en/latest/user/installation.html][install flycheck]] and [[https://github.com/ledger/ledger-mode/#installation][install ledger-mode]]. If you are
+an [[https://github.com/narendraj9/hledger-mode][hledger-mode]] user and would like to use flycheck-hledger, please
+[[https://github.com/DamienCassou/flycheck-hledger/issues/new][open an issue]].
+
+Run ~M-x package-refresh-contents~ followed by ~M-x package-install
+RET flycheck-hledger RET~. Then, add the following to your
+initialization file:
 
 #+BEGIN_SRC emacs-lisp
-  (add-to-list 'load-path "~/.emacs.d/lib/flycheck-hledger/")
   (require 'flycheck-hledger)
 #+END_SRC
+
+If you are using ~use-package~, here is what you may want to add to
+your initialization file instead:
+
+#+begin_src emacs-lisp
+  (use-package flycheck-hledger
+    :after (flycheck ledger-mode)
+    :demand t)
+#+end_src
+
+The code above will make sure that the package is loaded as soon as
+both ~flycheck~ and ~ledger-mode~ are loaded.
 
 If you have both [[https://github.com/purcell/flycheck-ledger][flycheck-ledger]] and flycheck-hledger installed, set
 ~flycheck-disabled-checkers~ to ~(ledger)~ locally (e.g., through a
@@ -25,9 +47,9 @@ file local variable) in your hledger files to deactivate
 The table below summarizes the available options. You can use ~M-x
 customize-group RET flycheck-options RET~ to change them.
 
-| *Option*                  | *Description*                           |
-|---------------------------+-----------------------------------------|
-| ~flycheck-hledger-strict~ | A boolean activating the [[https://hledger.org/hledger.html#strict-checks][strict checks]]. |
+| *Option*                  | *Description*                            |
+|---------------------------+------------------------------------------|
+| ~flycheck-hledger-strict~ | A boolean activating the [[https://hledger.org/hledger.html#strict-checks][strict checks]].  |
 | ~flycheck-hledger-checks~ | A list of strings for [[https://hledger.org/hledger.html#check][additional checks]]. |
 
 ** License
@@ -39,3 +61,5 @@ See [[file:COPYING][COPYING]]. Copyright (c) 2020-2021 Damien Cassou.
     <img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg">
   </a>
   #+END_HTML
+
+#  LocalWords:  hledger
