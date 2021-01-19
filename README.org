@@ -43,3 +43,5 @@ See [[file:COPYING][COPYING]]. Copyright (c) 2020-2021 Damien Cassou.
     <img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg">
   </a>
   #+END_HTML
+
+#  LocalWords:  hledger
