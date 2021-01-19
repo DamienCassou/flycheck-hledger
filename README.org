@@ -1,5 +1,6 @@
 * flycheck-hledger
 [[https://melpa.org/#/flycheck-hledger][file:https://melpa.org/packages/flycheck-hledger-badge.svg]]
+[[https://stable.melpa.org/#/flycheck-hledger][file:https://stable.melpa.org/packages/flycheck-hledger-badge.svg]]
 [[https://github.com/DamienCassou/flycheck-hledger/actions][file:https://github.com/DamienCassou/flycheck-hledger/workflows/CI/badge.svg]]
 
 ** Summary
