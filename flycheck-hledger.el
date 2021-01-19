@@ -47,8 +47,13 @@ https://hledger.org/hledger.html#check."
 
 (defun flycheck-hledger--enabled-p ()
   "Return non-nil if flycheck-hledger should be enabled in the current buffer."
-  (and (bound-and-true-p ledger-binary-path)
-       (string-suffix-p "hledger" ledger-binary-path)))
+  (or
+   ;; Either the user is using `hledger-mode':
+   (derived-mode-p 'hledger-mode)
+   ;; or the user is using `ledger-mode' with the binary path pointing
+   ;; to "hledger":
+   (and (bound-and-true-p ledger-binary-path)
+        (string-suffix-p "hledger" ledger-binary-path))))
 
 (flycheck-define-checker hledger
   "A checker for hledger journals, showing unmatched balances and failed checks."
