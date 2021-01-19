@@ -13,10 +13,11 @@ doesn't work.
 
 ** Installing
 
-Add the following to your initialization file:
+Run ~M-x package-refresh-contents~ followed by ~M-x package-install
+RET flycheck-hledger RET~. Then, add the following to your
+initialization file:
 
 #+BEGIN_SRC emacs-lisp
-  (add-to-list 'load-path "~/.emacs.d/lib/flycheck-hledger/")
   (require 'flycheck-hledger)
 #+END_SRC
 
