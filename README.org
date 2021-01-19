@@ -13,9 +13,8 @@ doesn't work.
 
 ** Installing
 
-You first need to [[https://www.flycheck.org/en/latest/user/installation.html][install flycheck]] and [[https://github.com/ledger/ledger-mode/#installation][install ledger-mode]]. If you are
-an [[https://github.com/narendraj9/hledger-mode][hledger-mode]] user and would like to use flycheck-hledger, please
-[[https://github.com/DamienCassou/flycheck-hledger/issues/new][open an issue]].
+You first need to [[https://www.flycheck.org/en/latest/user/installation.html][install flycheck]] and either [[https://github.com/ledger/ledger-mode/#installation][install ledger-mode]] or
+[[https://github.com/narendraj9/hledger-mode#installation][install hledger-mode]].
 
 Run ~M-x package-refresh-contents~ followed by ~M-x package-install
 RET flycheck-hledger RET~. Then, add the following to your

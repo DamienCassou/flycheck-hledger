@@ -45,6 +45,16 @@ uniqueleafnames. More information at URL
 https://hledger.org/hledger.html#check."
   :type '(repeat string))
 
+(defun flycheck-hledger--enabled-p ()
+  "Return non-nil if flycheck-hledger should be enabled in the current buffer."
+  (or
+   ;; Either the user is using `hledger-mode':
+   (derived-mode-p 'hledger-mode)
+   ;; or the user is using `ledger-mode' with the binary path pointing
+   ;; to "hledger":
+   (and (bound-and-true-p ledger-binary-path)
+        (string-suffix-p "hledger" ledger-binary-path))))
+
 (flycheck-define-checker hledger
   "A checker for hledger journals, showing unmatched balances and failed checks."
   :command ("hledger"
@@ -54,8 +64,7 @@ https://hledger.org/hledger.html#check."
             (option-flag "--strict" flycheck-hledger-strict)
             (eval flycheck-hledger-checks))
   ;; Activate the checker only if ledger-binary-path ends with "hledger":
-  :predicate (lambda () (and (bound-and-true-p ledger-binary-path)
-                        (string-suffix-p "hledger" (file-name-nondirectory ledger-binary-path))))
+  :predicate flycheck-hledger--enabled-p
   ;; A dedicated filter is necessary because hledger reports some errors with no line number:
   :error-filter (lambda (errors) (flycheck-sanitize-errors (flycheck-fill-empty-line-numbers errors)))
   :error-patterns
@@ -89,3 +98,5 @@ https://hledger.org/hledger.html#check."
 
 (provide 'flycheck-hledger)
 ;;; flycheck-hledger.el ends here
+
+;;; LocalWords:  flycheck-hledger
