@@ -4,7 +4,11 @@
 
 ** Summary
 
-This package is a [[https://www.flycheck.org/en/latest/][flycheck]] checker for [[https://hledger.org][hledger]] files.
+This package is a [[https://www.flycheck.org/en/latest/][flycheck]] checker for [[https://hledger.org][hledger]] files. It is tested
+with a fairly recent version of hledger (closely following the main
+branch of the git repository). If the package doesn't work for your
+version of hledger, try to update it and [[https://github.com/DamienCassou/flycheck-hledger/issues/new][open an issue]] if it still
+doesn't work.
 
 ** Installing
 
