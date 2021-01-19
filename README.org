@@ -25,9 +25,9 @@ file local variable) in your hledger files to deactivate
 The table below summarizes the available options. You can use ~M-x
 customize-group RET flycheck-options RET~ to change them.
 
-| *Option*                  | *Description*                           |
-|---------------------------+-----------------------------------------|
-| ~flycheck-hledger-strict~ | A boolean activating the [[https://hledger.org/hledger.html#strict-checks][strict checks]]. |
+| *Option*                  | *Description*                            |
+|---------------------------+------------------------------------------|
+| ~flycheck-hledger-strict~ | A boolean activating the [[https://hledger.org/hledger.html#strict-checks][strict checks]].  |
 | ~flycheck-hledger-checks~ | A list of strings for [[https://hledger.org/hledger.html#check][additional checks]]. |
 
 ** License
