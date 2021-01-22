@@ -11,6 +11,9 @@ branch of the git repository). If the package doesn't work for your
 version of hledger, try to update it and [[https://github.com/DamienCassou/flycheck-hledger/issues/new][open an issue]] if it still
 doesn't work.
 
+#+CAPTION: flycheck-hledger
+[[./media/screenshot.png]]
+
 ** Installing
 
 You first need to [[https://www.flycheck.org/en/latest/user/installation.html][install flycheck]] and either [[https://github.com/ledger/ledger-mode/#installation][install ledger-mode]] or
