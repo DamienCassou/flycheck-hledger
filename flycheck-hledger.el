@@ -70,27 +70,36 @@ https://hledger.org/hledger.html#check."
   :error-filter (lambda (errors) (flycheck-sanitize-errors (flycheck-fill-empty-line-numbers errors)))
   :error-parser flycheck-parse-with-patterns
   :error-patterns
-  (;; Used for an unbalanced transaction:
-   (error line-start "hledger: \"" (file-name) "\" (lines " line "-" end-line ")\n"
+  (
+   ;; Unbalanced transaction:
+   (error line-start "hledger: " (file-name) ":" line "-" end-line "\n"
           (message (zero-or-more line-start (zero-or-more not-newline) "\n")) "\n")
-   ;; Used for invalid balance assertion:
-   (error line-start "hledger: balance assertion: \"" (file-name) "\" (line " line ", column " column ")\n"
+   ;; Failing balance assertion:
+   (error line-start "hledger: balance assertion: " (file-name) ":" line ":" column "\n"
           "transaction:\n"
           (message (zero-or-more line-start (zero-or-more not-newline) "\n")) "\n")
-   ;; Used for invalid regular expression:
+   ;; Invalid regular expression:
    (error line-start "hledger: " (message "this regular expression" (zero-or-more not-newline)) "\n")
-   ;; Used for an undeclared payee:
-   (error line-start "Error: " (message) "\n"
-          "at: \"" (file-name) "\" (lines " line "-" end-line ")\n")
-   ;; Used for unordered dates:
-   (error line-start "Error: " (message) "\n"
-          "at \"" (file-name) "\" (lines " line "-" end-line "):\n")
-   ;; Used for duplicate leaf names:
-   (error line-start "Error: " (message) "\n")
-   ;; Used for an undeclared account:
+   ;; Undeclared account:
    (error line-start "hledger: " (message) "\n"
-          "in transaction at: \"" (file-name) "\" (lines " line "-" end-line ")\n")
-   ;; Used for parse errors and invalid dates:
+          "in transaction at: " (file-name) ":" line "-" end-line "\n")
+   ;; Undeclared commodity:
+   (error line-start "hledger: " (message) "\n"  ; hledger: prefix
+          "at: " (file-name) ":" line "-" end-line "\n")
+   ;; Undeclared payee:
+   (error line-start "Error: " (message) "\n"  ; Error: prefix
+          "at: " (file-name) ":" line "-" end-line "\n")
+
+   ;; Unordered dates:
+   (error line-start "Error: " (message) "\n"
+          "at " (file-name) ":" line "-" end-line ":\n"  ; at without colon, end-of-line colon
+          (zero-or-more line-start (zero-or-more not-newline) "\n"))  ; necessary to also match trailing text ? seems so in this case
+
+   ;; Non-unique account leaf names:
+   (error line-start "Error: account leaf names are not unique\n"
+          (message (zero-or-more not-newline) "\n")
+	  "seen in \"" (zero-or-more (not "\"")) "\" in transaction at: " (file-name) ":" line "-" end-line "\n")
+   ;; Parse errors, invalid dates:
    (error line-start "hledger: " (file-name) ":" line ":" column ":\n"
           (message (zero-or-more line-start (zero-or-more not-newline) "\n")) "\n")))
 
