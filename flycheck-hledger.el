@@ -57,16 +57,18 @@ https://hledger.org/hledger.html#check."
 
 (flycheck-define-checker hledger
   "A checker for hledger journals, showing unmatched balances and failed checks."
+  :modes (ledger-mode hledger-mode)
+  ;; Activate the checker only if ledger-binary-path ends with "hledger":
+  :predicate flycheck-hledger--enabled-p
   :command ("hledger"
             "-f" source-inplace
             "--auto"
             "check"
             (option-flag "--strict" flycheck-hledger-strict)
             (eval flycheck-hledger-checks))
-  ;; Activate the checker only if ledger-binary-path ends with "hledger":
-  :predicate flycheck-hledger--enabled-p
-  ;; A dedicated filter is necessary because hledger reports some errors with no line number:
+  ;; hledger error messages are quite inconsistent, requiring a filter and multiple patterns.
   :error-filter (lambda (errors) (flycheck-sanitize-errors (flycheck-fill-empty-line-numbers errors)))
+  :error-parser flycheck-parse-with-patterns
   :error-patterns
   (;; Used for an unbalanced transaction:
    (error line-start "hledger: \"" (file-name) "\" (lines " line "-" end-line ")\n"
@@ -90,9 +92,7 @@ https://hledger.org/hledger.html#check."
           "in transaction at: \"" (file-name) "\" (lines " line "-" end-line ")\n")
    ;; Used for parse errors and invalid dates:
    (error line-start "hledger: " (file-name) ":" line ":" column ":\n"
-          (message (zero-or-more line-start (zero-or-more not-newline) "\n")) "\n"))
-  :error-parser flycheck-parse-with-patterns
-  :modes (ledger-mode hledger-mode))
+          (message (zero-or-more line-start (zero-or-more not-newline) "\n")) "\n")))
 
 (add-to-list 'flycheck-checkers 'hledger)
 
