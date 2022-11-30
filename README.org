@@ -44,6 +44,9 @@ If you have both [[https://github.com/purcell/flycheck-ledger][flycheck-ledger]]
 file local variable) in your hledger files to deactivate
 ~flycheck-ledger~.
 
+If you are using ~ledger-mode~ any compatibility script assigned to
+~ledger-binary-path~ must have ~hledger~ at the end of the name.
+
 ** Configuration
 
 The table below summarizes the available options. You can use ~M-x
