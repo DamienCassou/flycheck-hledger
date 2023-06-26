@@ -41,7 +41,7 @@ See URL https://hledger.org/hledger.html#strict-mode"
   "List of additional checks to run.
 
 Checks include: accounts, commodities, ordereddates, payees and
-uniqueleafnames. More information at URL
+uniqueleafnames.  More information at URL
 https://hledger.org/hledger.html#check."
   :type '(repeat string))
 
