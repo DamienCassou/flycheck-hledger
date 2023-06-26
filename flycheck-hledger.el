@@ -1,6 +1,6 @@
 ;;; flycheck-hledger.el --- Flycheck module to check hledger journals  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2020-2021  Damien Cassou
+;; Copyright (C) 2020-2023  Damien Cassou
 
 ;; Author: Damien Cassou <damien@cassou.me>
 ;; Url: https://github.com/DamienCassou/flycheck-hledger/
@@ -41,7 +41,7 @@ See URL https://hledger.org/hledger.html#strict-mode"
   "List of additional checks to run.
 
 Checks include: accounts, commodities, ordereddates, payees and
-uniqueleafnames. More information at URL
+uniqueleafnames.  More information at URL
 https://hledger.org/hledger.html#check."
   :type '(repeat string))
 
