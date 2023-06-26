@@ -63,7 +63,7 @@ customize-group RET flycheck-options RET~ to change them.
 
 ** License
 
-See [[file:COPYING][COPYING]]. Copyright (c) 2020-2021 Damien Cassou.
+See [[file:COPYING][COPYING]]. Copyright (c) 2020-2023 Damien Cassou.
 
   #+BEGIN_HTML
   <a href="https://liberapay.com/DamienCassou/donate">
