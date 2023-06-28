@@ -2,6 +2,7 @@ ELPA_DEPENDENCIES=package-lint flycheck dash
 
 ELPA_ARCHIVES=melpa gnu
 
+TEST_ERT_FILES=$(wildcard tests/*-test.el)
 LINT_CHECKDOC_FILES=flycheck-hledger.el
 LINT_PACKAGE_LINT_FILES=flycheck-hledger.el
 LINT_COMPILE_FILES=flycheck-hledger.el
