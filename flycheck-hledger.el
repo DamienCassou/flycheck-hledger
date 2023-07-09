@@ -77,37 +77,37 @@ https://hledger.org/hledger.html#check."
 
    ;; hledger 1.26 assertions (:LINE:COL)
    (error
-    bol "hledger: Error: balance assertion: " (file-name (minimal-match (one-or-more (not ":")))) ":" line ":" column "\n"
+    bol "hledger" (optional ".exe") ": Error: balance assertion: " (file-name (optional alpha ":") (+ (not ":"))) ":" line ":" column "\n"
     (message (one-or-more bol (zero-or-more nonl) "\n")))
 
    ;; hledger 1.26 balancedwithautoconversion, balancednoautoconversion (:LINE-LINE)
    (error
-    bol "hledger: Error: " (file-name (minimal-match (one-or-more (not ":")))) ":" line "-" end-line "\n"
+    bol "hledger" (optional ".exe") ": Error: " (file-name (optional alpha ":") (+ (not ":"))) ":" line "-" end-line "\n"
     (message (one-or-more bol (zero-or-more nonl) "\n")))
 
    ;; hledger 1.26+
 
    ;; hledger 1.26+ error with LINE-LINE:
    (error
-    bol "hledger: Error: " (file-name (minimal-match (one-or-more (not ":")))) ":" line "-" end-line ":\n" ; first line
+    bol "hledger" (optional ".exe") ": Error: " (file-name (optional alpha ":") (+ (not ":"))) ":" line "-" end-line ":\n" ; first line
     (one-or-more bol (any space digit) (zero-or-more nonl) "\n")                                           ; excerpt lines
     (message (one-or-more bol (zero-or-more nonl) "\n")))                                                  ; message lines
 
    ;; hledger 1.26+ error with LINE:COL-COL:
    (error
-    bol "hledger: Error: " (file-name (minimal-match (one-or-more (not ":")))) ":" line ":" column "-" end-column ":\n"
+    bol "hledger" (optional ".exe") ": Error: " (file-name (optional alpha ":") (+ (not ":"))) ":" line ":" column "-" end-column ":\n"
     (one-or-more bol (any space digit) (zero-or-more nonl) "\n")
     (message (one-or-more bol (zero-or-more nonl) "\n")))
 
    ;; hledger 1.26+ error with LINE:COL:
    (error
-    bol "hledger: Error: " (file-name (minimal-match (one-or-more (not ":")))) ":" line ":" column ":\n"
+    bol "hledger" (optional ".exe") ": Error: " (file-name (optional alpha ":") (+ (not ":"))) ":" line ":" column ":\n"
     (one-or-more bol (any space digit) (zero-or-more nonl) "\n")
     (message (one-or-more bol (zero-or-more nonl) "\n")))
 
    ;; hledger 1.26+ error with LINE:
    (error
-    bol "hledger: Error: " (file-name (minimal-match (one-or-more (not ":")))) ":" line ":\n"
+    bol "hledger" (optional ".exe") ": Error: " (file-name (optional alpha ":") (+ (not ":"))) ":" line ":\n"
     (one-or-more bol (any space digit) (zero-or-more nonl) "\n")
     (message (one-or-more bol (zero-or-more nonl) "\n")))))
 
