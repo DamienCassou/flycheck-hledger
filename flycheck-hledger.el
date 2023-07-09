@@ -90,26 +90,26 @@ https://hledger.org/hledger.html#check."
    ;; hledger 1.26+ error with LINE-LINE:
    (error
     bol "hledger" (optional ".exe") ": Error: " (file-name (optional alpha ":") (+ (not ":"))) ":" line "-" end-line ":\n" ; first line
-    (one-or-more bol (any space digit) (zero-or-more nonl) "\n")                                           ; excerpt lines
-    (message (one-or-more bol (zero-or-more nonl) "\n")))                                                  ; message lines
+    (one-or-more (or (seq (one-or-more digit) " ") (>= 2 " ")) "| " (zero-or-more nonl) "\n")                   ; excerpt lines
+    (message "\n" (one-or-more bol (zero-or-more nonl) "\n")))                                                  ; message lines
 
    ;; hledger 1.26+ error with LINE:COL-COL:
    (error
     bol "hledger" (optional ".exe") ": Error: " (file-name (optional alpha ":") (+ (not ":"))) ":" line ":" column "-" end-column ":\n"
-    (one-or-more bol (any space digit) (zero-or-more nonl) "\n")
-    (message (one-or-more bol (zero-or-more nonl) "\n")))
+    (one-or-more (or (seq (one-or-more digit) " ") (>= 2 " ")) "| " (zero-or-more nonl) "\n")                   ; excerpt lines
+    (message "\n" (one-or-more bol (zero-or-more nonl) "\n")))
 
    ;; hledger 1.26+ error with LINE:COL:
    (error
     bol "hledger" (optional ".exe") ": Error: " (file-name (optional alpha ":") (+ (not ":"))) ":" line ":" column ":\n"
-    (one-or-more bol (any space digit) (zero-or-more nonl) "\n")
-    (message (one-or-more bol (zero-or-more nonl) "\n")))
+    (one-or-more (or (seq (one-or-more digit) " ") (>= 2 " ")) "| " (zero-or-more nonl) "\n")                   ; excerpt lines
+    (message "\n" (one-or-more bol (zero-or-more nonl) "\n")))
 
    ;; hledger 1.26+ error with LINE:
    (error
     bol "hledger" (optional ".exe") ": Error: " (file-name (optional alpha ":") (+ (not ":"))) ":" line ":\n"
-    (one-or-more bol (any space digit) (zero-or-more nonl) "\n")
-    (message (one-or-more bol (zero-or-more nonl) "\n")))))
+    (one-or-more (or (seq (one-or-more digit) " ") (>= 2 " ")) "| " (zero-or-more nonl) "\n")                   ; excerpt lines
+    (message "\n" (one-or-more bol (zero-or-more nonl) "\n")))))
 
 (add-to-list 'flycheck-checkers 'hledger)
 
