@@ -79,11 +79,117 @@ The error message.
 The error message.
 "))
 
+(defconst flycheck-hledger-test-error-excerpt-with-shuffled-line-numbers
+  '(
+    :expected-file "./file.ledger"
+    :expected-line "2"
+    :expected-message "\nStrict account checking is enabled, and
+account \"a\" has not been declared.
+Consider adding an account directive. Examples:
+
+account a
+account a    ; type:A  ; (L,E,R,X,C,V)\n"
+    :output "hledger.exe: Error: ./file.ledger:2:
+  | 2022-01-01
+2 |     (a)               1
+  |      ^
+
+Strict account checking is enabled, and
+account \"a\" has not been declared.
+Consider adding an account directive. Examples:
+
+account a
+account a    ; type:A  ; (L,E,R,X,C,V)
+"))
+
+(defconst flycheck-hledger-test-error-standard-line-windows
+  '(
+    :expected-file "C:\\data\\file.ledger"
+    :expected-line "1"
+    :expected-message "\nThe error message.\n"
+    :output "hledger: error: C:\\data\\file.ledger:1:
+  | 2022-01-01
+4 |     (a)               1
+  |      ^
+
+The error message.
+"))
+
+(defconst flycheck-hledger-test-error-standard-line-column-windows
+  '(
+    :expected-file "C:\\data\\file.ledger"
+    :expected-line "1"
+    :expected-column "10"
+    :expected-message "\nThe error message.\n"
+    :output "hledger: error: C:\\data\\file.ledger:1:10:
+  | 2022-01-01
+4 |     a               0 = 1
+  |                       ^^^
+
+The error message.
+"))
+
+(defconst flycheck-hledger-test-error-standard-line-line-windows
+  '(
+    :expected-file "C:\\data\\file.ledger"
+    :expected-line "1"
+    :expected-end-line "2"
+    :expected-message "\nThe error message.\n"
+    :output "hledger: error: C:\\data\\file.ledger:1-2:
+3 | 2022-01-01
+  |     a               1
+
+The error message.
+"))
+
+(defconst flycheck-hledger-test-error-standard-line-col-col-windows
+  '(
+    :expected-file "C:\\data\\file.ledger"
+    :expected-line "1"
+    :expected-column "10"
+    :expected-end-column "20"
+    :expected-message "\nThe error message.\n"
+    :output "hledger: error: C:\\data\\file.ledger:1:10-20:
+3 | 2022-01-01
+  |     a               1
+
+The error message.
+"))
+
+(defconst flycheck-hledger-test-error-excerpt-with-shuffled-line-numbers-windows
+  '(
+    :expected-file "C:\\data\\file.ledger"
+    :expected-line "2"
+    :expected-message "\nStrict account checking is enabled, and
+account \"a\" has not been declared.
+Consider adding an account directive. Examples:
+
+account a
+account a    ; type:A  ; (L,E,R,X,C,V)\n"
+    :output "hledger.exe: Error: C:\\data\\file.ledger:2:
+  | 2022-01-01
+2 |     (a)               1
+  |      ^
+
+Strict account checking is enabled, and
+account \"a\" has not been declared.
+Consider adding an account directive. Examples:
+
+account a
+account a    ; type:A  ; (L,E,R,X,C,V)
+"))
+
 (defconst flycheck-hledger-test-error-symbols
   '(flycheck-hledger-test-error-standard-line
     flycheck-hledger-test-error-standard-line-column
     flycheck-hledger-test-error-standard-line-line
-    flycheck-hledger-test-error-standard-line-col-col))
+    flycheck-hledger-test-error-standard-line-col-col
+    flycheck-hledger-test-error-excerpt-with-shuffled-line-numbers
+    flycheck-hledger-test-error-standard-line-windows
+    flycheck-hledger-test-error-standard-line-column-windows
+    flycheck-hledger-test-error-standard-line-line-windows
+    flycheck-hledger-test-error-standard-line-col-col-windows
+    flycheck-hledger-test-error-excerpt-with-shuffled-line-numbers-windows))
 
 (ert-deftest flycheck-hledger-test-error-patterns ()
   (let* ((error-patterns (flycheck-checker-get 'hledger 'error-patterns)))
