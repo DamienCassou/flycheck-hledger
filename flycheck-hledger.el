@@ -105,11 +105,12 @@ https://hledger.org/hledger.html#check."
     (one-or-more (or (seq (one-or-more digit) " ") (>= 2 " ")) "| " (zero-or-more nonl) "\n")                   ; excerpt lines
     (message "\n" (one-or-more bol (zero-or-more nonl) "\n")))
 
-   ;; hledger 1.26+ error with LINE:
+   ;; hledger 1.26+ error with LINE and optional context:
    (error
     bol "hledger" (optional ".exe") ": Error: " (file-name (optional alpha ":") (+ (not ":"))) ":" line ":\n"
-    (one-or-more (or (seq (one-or-more digit) " ") (>= 2 " ")) "| " (zero-or-more nonl) "\n")                   ; excerpt lines
-    (message "\n" (one-or-more bol (zero-or-more nonl) "\n")))))
+    (>= 2 (optional "\n") (one-or-more (or (seq (one-or-more digit) " ") (>= 2 " ")) "|" (zero-or-more nonl) "\n")) ; excerpt lines
+    "\n"
+    (message (one-or-more (zero-or-more nonl) (or "\n" string-end))))))
 
 (add-to-list 'flycheck-checkers 'hledger)
 
