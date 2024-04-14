@@ -123,6 +123,22 @@ Ordered dates checking is enabled, and this transaction's
 date (2023-12-12) is out of order with the previous transaction.
 Consider moving this entry into date order, or adjusting its date."))
 
+(defconst flycheck-hledger-test-compressed-error
+  '(
+    :expected-file "./file.ledger"
+    :expected-line "2"
+    :expected-column "13"
+    :expected-message "unexpected newline
+expecting '+', '-', or number
+"
+    :output "hledger.exe: Error: ./file.ledger:2:13:
+  |
+2 |   card  -USD
+  |             ^
+unexpected newline
+expecting '+', '-', or number
+"))
+
 (defconst flycheck-hledger-test-error-standard-line-windows
   '(
     :expected-file "C:\\data\\file.ledger"
@@ -221,19 +237,37 @@ Ordered dates checking is enabled, and this transaction's
 date (2023-12-12) is out of order with the previous transaction.
 Consider moving this entry into date order, or adjusting its date."))
 
+(defconst flycheck-hledger-test-compressed-error-windows
+  '(
+    :expected-file "C:\\data\\file.ledger"
+    :expected-line "2"
+    :expected-column "13"
+    :expected-message "unexpected newline
+expecting '+', '-', or number
+"
+    :output "hledger.exe: Error: C:\\data\\file.ledger:2:13:
+  |
+2 |   card  -USD
+  |             ^
+unexpected newline
+expecting '+', '-', or number
+"))
+
 (defconst flycheck-hledger-test-error-symbols
   '(flycheck-hledger-test-error-standard-line
     flycheck-hledger-test-error-standard-line-column
     flycheck-hledger-test-error-standard-line-line
     flycheck-hledger-test-error-standard-line-col-col
     flycheck-hledger-test-error-excerpt-with-shuffled-line-numbers
+    flycheck-hledger-test-compressed-error
     flycheck-hledger-test-error-standard-line-with-context
     flycheck-hledger-test-error-standard-line-windows
     flycheck-hledger-test-error-standard-line-column-windows
     flycheck-hledger-test-error-standard-line-line-windows
     flycheck-hledger-test-error-standard-line-col-col-windows
     flycheck-hledger-test-error-excerpt-with-shuffled-line-numbers-windows
-    flycheck-hledger-test-error-standard-line-with-context-windows))
+    flycheck-hledger-test-error-standard-line-with-context-windows
+    flycheck-hledger-test-compressed-error-windows))
 
 (ert-deftest flycheck-hledger-test-error-patterns ()
   (let* ((error-patterns (flycheck-checker-get 'hledger 'error-patterns)))
