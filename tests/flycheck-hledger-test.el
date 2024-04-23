@@ -29,7 +29,7 @@
   '(
     :expected-file "./file.ledger"
     :expected-line "1"
-    :expected-message "\nThe error message.\n"
+    :expected-message "The error message.\n"
     :output "hledger: Error: ./file.ledger:1:
   | 2022-01-01
 4 |     (a)               1
@@ -83,7 +83,7 @@ The error message.
   '(
     :expected-file "./file.ledger"
     :expected-line "2"
-    :expected-message "\nStrict account checking is enabled, and
+    :expected-message "Strict account checking is enabled, and
 account \"a\" has not been declared.
 Consider adding an account directive. Examples:
 
@@ -102,11 +102,48 @@ account a
 account a    ; type:A  ; (L,E,R,X,C,V)
 "))
 
+(defconst flycheck-hledger-test-error-standard-line-with-context
+  '(
+    :expected-file "./file.ledger"
+    :expected-line "5"
+    :expected-message "Ordered dates checking is enabled, and this transaction's
+date (2023-12-12) is out of order with the previous transaction.
+Consider moving this entry into date order, or adjusting its date."
+    :output "hledger: Error: ./file.ledger:5:
+1 | 2023-12-14 Payment 2
+  |     card             USD -50
+  |     expenses          USD 50
+
+5 | 2023-12-12 Payment 1
+  | ^^^^^^^^^^
+  |     card             USD -25
+  |     expenses          USD 25
+
+Ordered dates checking is enabled, and this transaction's
+date (2023-12-12) is out of order with the previous transaction.
+Consider moving this entry into date order, or adjusting its date."))
+
+(defconst flycheck-hledger-test-compressed-error
+  '(
+    :expected-file "./file.ledger"
+    :expected-line "2"
+    :expected-column "13"
+    :expected-message "unexpected newline
+expecting '+', '-', or number
+"
+    :output "hledger.exe: Error: ./file.ledger:2:13:
+  |
+2 |   card  -USD
+  |             ^
+unexpected newline
+expecting '+', '-', or number
+"))
+
 (defconst flycheck-hledger-test-error-standard-line-windows
   '(
     :expected-file "C:\\data\\file.ledger"
     :expected-line "1"
-    :expected-message "\nThe error message.\n"
+    :expected-message "The error message.\n"
     :output "hledger: error: C:\\data\\file.ledger:1:
   | 2022-01-01
 4 |     (a)               1
@@ -160,7 +197,7 @@ The error message.
   '(
     :expected-file "C:\\data\\file.ledger"
     :expected-line "2"
-    :expected-message "\nStrict account checking is enabled, and
+    :expected-message "Strict account checking is enabled, and
 account \"a\" has not been declared.
 Consider adding an account directive. Examples:
 
@@ -179,17 +216,58 @@ account a
 account a    ; type:A  ; (L,E,R,X,C,V)
 "))
 
+(defconst flycheck-hledger-test-error-standard-line-with-context-windows
+  '(
+    :expected-file "C:\\data\\file.ledger"
+    :expected-line "5"
+    :expected-message "Ordered dates checking is enabled, and this transaction's
+date (2023-12-12) is out of order with the previous transaction.
+Consider moving this entry into date order, or adjusting its date."
+    :output "hledger.exe: Error: C:\\data\\file.ledger:5:
+1 | 2023-12-14 Payment 2
+  |     card             USD -50
+  |     expenses          USD 50
+
+5 | 2023-12-12 Payment 1
+  | ^^^^^^^^^^
+  |     card             USD -25
+  |     expenses          USD 25
+
+Ordered dates checking is enabled, and this transaction's
+date (2023-12-12) is out of order with the previous transaction.
+Consider moving this entry into date order, or adjusting its date."))
+
+(defconst flycheck-hledger-test-compressed-error-windows
+  '(
+    :expected-file "C:\\data\\file.ledger"
+    :expected-line "2"
+    :expected-column "13"
+    :expected-message "unexpected newline
+expecting '+', '-', or number
+"
+    :output "hledger.exe: Error: C:\\data\\file.ledger:2:13:
+  |
+2 |   card  -USD
+  |             ^
+unexpected newline
+expecting '+', '-', or number
+"))
+
 (defconst flycheck-hledger-test-error-symbols
   '(flycheck-hledger-test-error-standard-line
     flycheck-hledger-test-error-standard-line-column
     flycheck-hledger-test-error-standard-line-line
     flycheck-hledger-test-error-standard-line-col-col
     flycheck-hledger-test-error-excerpt-with-shuffled-line-numbers
+    flycheck-hledger-test-compressed-error
+    flycheck-hledger-test-error-standard-line-with-context
     flycheck-hledger-test-error-standard-line-windows
     flycheck-hledger-test-error-standard-line-column-windows
     flycheck-hledger-test-error-standard-line-line-windows
     flycheck-hledger-test-error-standard-line-col-col-windows
-    flycheck-hledger-test-error-excerpt-with-shuffled-line-numbers-windows))
+    flycheck-hledger-test-error-excerpt-with-shuffled-line-numbers-windows
+    flycheck-hledger-test-error-standard-line-with-context-windows
+    flycheck-hledger-test-compressed-error-windows))
 
 (ert-deftest flycheck-hledger-test-error-patterns ()
   (let* ((error-patterns (flycheck-checker-get 'hledger 'error-patterns)))
