@@ -43,7 +43,7 @@ The error message.
     :expected-file "./file.ledger"
     :expected-line "1"
     :expected-column "10"
-    :expected-message "\nThe error message.\n"
+    :expected-message "The error message.\n"
     :output "hledger: Error: ./file.ledger:1:10:
   | 2022-01-01
 4 |     a               0 = 1
@@ -57,7 +57,7 @@ The error message.
     :expected-file "./file.ledger"
     :expected-line "1"
     :expected-end-line "2"
-    :expected-message "\nThe error message.\n"
+    :expected-message "The error message.\n"
     :output "hledger: Error: ./file.ledger:1-2:
 3 | 2022-01-01
   |     a               1
@@ -71,7 +71,7 @@ The error message.
     :expected-line "1"
     :expected-column "10"
     :expected-end-column "20"
-    :expected-message "\nThe error message.\n"
+    :expected-message "The error message.\n"
     :output "hledger: Error: ./file.ledger:1:10-20:
 3 | 2022-01-01
   |     a               1
@@ -139,6 +139,14 @@ unexpected newline
 expecting '+', '-', or number
 "))
 
+(defconst flycheck-hledger-test-error-include-csv
+  '(
+    :expected-file nil
+    :expected-line nil
+    :expected-column nil
+    :expected-message "sorry, CSV files can't be included yet"
+    :output "hledger: Error: sorry, CSV files can't be included yet"))
+
 (defconst flycheck-hledger-test-error-standard-line-windows
   '(
     :expected-file "C:\\data\\file.ledger"
@@ -157,7 +165,7 @@ The error message.
     :expected-file "C:\\data\\file.ledger"
     :expected-line "1"
     :expected-column "10"
-    :expected-message "\nThe error message.\n"
+    :expected-message "The error message.\n"
     :output "hledger: error: C:\\data\\file.ledger:1:10:
   | 2022-01-01
 4 |     a               0 = 1
@@ -171,7 +179,7 @@ The error message.
     :expected-file "C:\\data\\file.ledger"
     :expected-line "1"
     :expected-end-line "2"
-    :expected-message "\nThe error message.\n"
+    :expected-message "The error message.\n"
     :output "hledger: error: C:\\data\\file.ledger:1-2:
 3 | 2022-01-01
   |     a               1
@@ -185,7 +193,7 @@ The error message.
     :expected-line "1"
     :expected-column "10"
     :expected-end-column "20"
-    :expected-message "\nThe error message.\n"
+    :expected-message "The error message.\n"
     :output "hledger: error: C:\\data\\file.ledger:1:10-20:
 3 | 2022-01-01
   |     a               1
@@ -260,6 +268,7 @@ expecting '+', '-', or number
     flycheck-hledger-test-error-standard-line-col-col
     flycheck-hledger-test-error-excerpt-with-shuffled-line-numbers
     flycheck-hledger-test-compressed-error
+    flycheck-hledger-test-error-include-csv
     flycheck-hledger-test-error-standard-line-with-context
     flycheck-hledger-test-error-standard-line-windows
     flycheck-hledger-test-error-standard-line-column-windows
