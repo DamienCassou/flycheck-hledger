@@ -67,50 +67,39 @@ https://hledger.org/hledger.html#check."
   :error-parser flycheck-parse-with-patterns
   :error-patterns
   (
-   ;; hledger error messages are becoming more consistent, but still require a number of patterns.
-   ;; We try to support hledger 1.26 and newer.
-   ;; The typical format is a standard first line with possible error type, filename and line/column number(s),
-   ;; several lines of highlighted excerpt, and one or more lines of explanation.
-   ;; See https://github.com/simonmichael/hledger/tree/master/hledger/test/errors for examples.
-
-   ;; hledger 1.26
-
-   ;; hledger 1.26 assertions (:LINE:COL)
+   ;; hledger error messages have changed over time. There was a significant cleanup in hledger 1.26.
+   ;; Here we try to support 2024's hledger 1.40 and up. Most error messages
+   ;; start with a line like "hledger: Error: PATH:LINE[-ENDLINE][:COL[-ENDCOL]]:",
+   ;; followed by a multiline excerpt which we ignore here,
+   ;; followed by one or more lines of explanation which we use as the flycheck message.
+   ;; Eg (see also https://github.com/simonmichael/hledger/tree/master/hledger/test/errors):
+   ;;
+   ;;     hledger: Error: /Users/simon/src/hledger/hledger/test/errors/./assertions.j:4:8:
+   ;;       | 2022-01-01
+   ;;     4 |     a               0 = 1
+   ;;       |                       ^^^
+   ;;
+   ;;     Balance assertion failed in a
+   ;;     In commodity "" at this point, excluding subaccounts, ignoring costs,
+   ;;     the asserted balance is:        1
+   ;;     but the calculated balance is:  0
+   ;;     (difference: 1)
+   ;;     To troubleshoot, check this account's running balance with assertions disabled, eg:
+   ;;     hledger reg -I 'a$' cur:
+   ;; 
+   ;; There are a few variations of this - some message are missing newlines etc.
    (error
-    bol "hledger" (optional ".exe") ": Error: balance assertion: " (file-name (optional alpha ":") (+ (not ":"))) ":" line ":" column "\n"
-    (message (one-or-more bol (zero-or-more nonl) "\n")))
+    bol "hledger" (optional ".exe") ": Error: " (file-name (optional alpha ":") (+ (not ":"))) ":" line (optional "-" end-line) (optional ":" column (optional "-" end-column)) ":\n"
+    (one-or-more  ; usually there's one excerpt, but ordereddates error shows two
+        (one-or-more (or (seq (one-or-more digit) " ") (>= 2 " ")) "|" (zero-or-more nonl) "\n")
+        (? "\n"))
+    (message (one-or-more bol (zero-or-more nonl) (? "\n"))))
 
-   ;; hledger 1.26 balancedwithautoconversion, balancednoautoconversion (:LINE-LINE)
+   ;; And there are still some error messages without position info. Eg:
+   ;; hledger: Error: sorry, CSV files can't be included yet
    (error
-    bol "hledger" (optional ".exe") ": Error: " (file-name (optional alpha ":") (+ (not ":"))) ":" line "-" end-line "\n"
-    (message (one-or-more bol (zero-or-more nonl) "\n")))
+    bol "hledger" (optional ".exe") ": Error: " (message (one-or-more nonl) (? "\n")))))
 
-   ;; hledger 1.26+
-
-   ;; hledger 1.26+ error with LINE-LINE:
-   (error
-    bol "hledger" (optional ".exe") ": Error: " (file-name (optional alpha ":") (+ (not ":"))) ":" line "-" end-line ":\n" ; first line
-    (one-or-more (or (seq (one-or-more digit) " ") (>= 2 " ")) "|" (zero-or-more nonl) "\n")                   ; excerpt lines
-    (message "\n" (one-or-more bol (zero-or-more nonl) "\n")))                                                  ; message lines
-
-   ;; hledger 1.26+ error with LINE:COL-COL:
-   (error
-    bol "hledger" (optional ".exe") ": Error: " (file-name (optional alpha ":") (+ (not ":"))) ":" line ":" column "-" end-column ":\n"
-    (one-or-more (or (seq (one-or-more digit) " ") (>= 2 " ")) "|" (zero-or-more nonl) "\n")                   ; excerpt lines
-    (message "\n" (one-or-more bol (zero-or-more nonl) "\n")))
-
-   ;; hledger 1.26+ error with LINE:COL:
-   (error
-    bol "hledger" (optional ".exe") ": Error: " (file-name (optional alpha ":") (+ (not ":"))) ":" line ":" column ":\n"
-    (one-or-more (or (seq (one-or-more digit) " ") (>= 2 " ")) "|" (zero-or-more nonl) "\n")                   ; excerpt lines
-    (message (? "\n") (one-or-more bol (zero-or-more nonl) "\n")))
-
-   ;; hledger 1.26+ error with LINE and optional context:
-   (error
-    bol "hledger" (optional ".exe") ": Error: " (file-name (optional alpha ":") (+ (not ":"))) ":" line ":\n"
-    (>= 2 (optional "\n") (one-or-more (or (seq (one-or-more digit) " ") (>= 2 " ")) "|" (zero-or-more nonl) "\n")) ; excerpt lines
-    "\n"
-    (message (one-or-more (zero-or-more nonl) (or "\n" string-end))))))
 
 (add-to-list 'flycheck-checkers 'hledger)
 
