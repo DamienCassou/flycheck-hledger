@@ -99,8 +99,9 @@ More information at URL https://hledger.org/hledger.html#check."
 
    ;; And there are still some error messages without position info. Eg:
    ;; hledger: Error: sorry, CSV files can't be included yet
+   ;; These can have several lines (eg CSV conversion errors); use all of them as the message.
    (error
-    bol "hledger" (optional ".exe") ": Error: " (message (one-or-more nonl) (? "\n")))))
+    bol "hledger" (optional ".exe") ": Error: " (message (one-or-more nonl) (zero-or-more "\n" (zero-or-more nonl))))))
 
 
 (add-to-list 'flycheck-checkers 'hledger)

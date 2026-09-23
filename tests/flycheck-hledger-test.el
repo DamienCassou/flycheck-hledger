@@ -383,6 +383,36 @@ Lots matching {$50}:
   Total: 10 AAPL
 "))
 
+(defconst flycheck-hledger-test-error-multiline-no-position
+  '(
+    :expected-file nil
+    :expected-line nil
+    :expected-column nil
+    :expected-message "in CSV rules:
+record: 2022-01-03,1,2
+  %1   2022-01-03
+  %2   1
+  %3   2
+while calculating amount for posting 1
+rule \"amount-in %2\" assigned value \"1\"       (./file.csv.rules:3)
+rule \"amount-out %3\" assigned value \"2\"      (./file.csv.rules:4)
+
+Multiple non-zero amounts were assigned for an amount field.
+Please ensure just one non-zero amount is assigned, perhaps with an if rule.
+"
+    :output "hledger: Error: in CSV rules:
+record: 2022-01-03,1,2
+  %1   2022-01-03
+  %2   1
+  %3   2
+while calculating amount for posting 1
+rule \"amount-in %2\" assigned value \"1\"       (./file.csv.rules:3)
+rule \"amount-out %3\" assigned value \"2\"      (./file.csv.rules:4)
+
+Multiple non-zero amounts were assigned for an amount field.
+Please ensure just one non-zero amount is assigned, perhaps with an if rule.
+"))
+
 (defconst flycheck-hledger-test-error-symbols
   '(flycheck-hledger-test-error-standard-line
     flycheck-hledger-test-error-standard-line-column
@@ -403,7 +433,8 @@ Lots matching {$50}:
     flycheck-hledger-test-error-ordereddates-hledger2
     flycheck-hledger-test-error-uniqueleafnames-hledger1
     flycheck-hledger-test-error-uniqueleafnames-hledger2
-    flycheck-hledger-test-error-lots-hledger2))
+    flycheck-hledger-test-error-lots-hledger2
+    flycheck-hledger-test-error-multiline-no-position))
 
 (ert-deftest flycheck-hledger-test-error-patterns ()
   (let* ((error-patterns (flycheck-checker-get 'hledger 'error-patterns)))
