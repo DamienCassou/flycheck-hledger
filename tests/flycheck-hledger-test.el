@@ -261,6 +261,158 @@ unexpected newline
 expecting '+', '-', or number
 "))
 
+(defconst flycheck-hledger-test-error-ordereddates-hledger1
+  '(
+    :expected-file "./file.ledger"
+    :expected-line "10"
+    :expected-message "Ordered dates checking is enabled, and this transaction's
+date (2022-01-01) is out of order with the previous transaction.
+Consider moving this entry into date order, or adjusting its date.
+"
+    :output "hledger: Error: ./file.ledger:10:
+7 | 2022-01-02 p
+  |     (a)                                            1
+ 
+10 | 2022-01-01 p
+   | ^^^^^^^^^^
+   |     (a)                                            1
+
+Ordered dates checking is enabled, and this transaction's
+date (2022-01-01) is out of order with the previous transaction.
+Consider moving this entry into date order, or adjusting its date.
+"))
+
+(defconst flycheck-hledger-test-error-ordereddates-hledger2
+  '(
+    :expected-file "./file.ledger"
+    :expected-line "10"
+    :expected-message "Ordered dates checking is enabled, and this transaction's
+date (2022-01-01) is out of order with the previous transaction.
+Consider moving this entry into date order, or adjusting its date.
+"
+    :output "hledger: Error: ./file.ledger:10:
+7 | 2022-01-02 p
+  |     (a)                                            1
+
+10 | 2022-01-01 p
+   | ^^^^^^^^^^
+   |     (a)                                            1
+
+Ordered dates checking is enabled, and this transaction's
+date (2022-01-01) is out of order with the previous transaction.
+Consider moving this entry into date order, or adjusting its date.
+"))
+
+(defconst flycheck-hledger-test-error-uniqueleafnames-hledger1
+  '(
+    :expected-file "./file.ledger"
+    :expected-line "12"
+    :expected-message "Checking for unique account leaf names is enabled, and
+account leaf name \"c\" is not unique.
+It appears in these account names, which are used in 2 places:
+a:c
+b:c
+
+Consider changing these account names so their last parts are different.
+"
+    :output "hledger: Error: ./file.ledger:12:
+  | 2022-01-01 p
+9 |     (a:c)                                          1
+ ...
+   | 2022-01-01 p
+12 |     (b:c)                                          1
+   |        ^
+
+Checking for unique account leaf names is enabled, and
+account leaf name \"c\" is not unique.
+It appears in these account names, which are used in 2 places:
+a:c
+b:c
+
+Consider changing these account names so their last parts are different.
+"))
+
+(defconst flycheck-hledger-test-error-uniqueleafnames-hledger2
+  '(
+    :expected-file "./file.ledger"
+    :expected-line "12"
+    :expected-message "Checking for unique account leaf names is enabled, and
+account leaf name \"c\" is not unique.
+It appears in these account names, which are used in 2 places:
+a:c
+b:c
+
+Consider changing these account names so their last parts are different.
+"
+    :output "hledger: Error: ./file.ledger:12:
+  | 2022-01-01 p
+9 |     (a:c)                                          1
+
+   | 2022-01-01 p
+12 |     (b:c)                                          1
+   |        ^
+
+Checking for unique account leaf names is enabled, and
+account leaf name \"c\" is not unique.
+It appears in these account names, which are used in 2 places:
+a:c
+b:c
+
+Consider changing these account names so their last parts are different.
+"))
+
+(defconst flycheck-hledger-test-error-lots-hledger2
+  '(
+    :expected-file "./file.ledger"
+    :expected-line "8"
+    :expected-message "Postings were read as: dispose, unclassified.
+Insufficient lots for commodity AAPL in account assets:stocks: need 15 but only 10 available
+Lots matching {$50}:
+  {2022-01-01, $50}  10
+  Total: 10 AAPL
+"
+    :output "hledger: Error: ./file.ledger:8:
+  | 2022-02-01 sell
+8 |     assets:stocks                                -15 AAPL {$50} @ $55
+  |     assets:checking                             $825
+
+Postings were read as: dispose, unclassified.
+Insufficient lots for commodity AAPL in account assets:stocks: need 15 but only 10 available
+Lots matching {$50}:
+  {2022-01-01, $50}  10
+  Total: 10 AAPL
+"))
+
+(defconst flycheck-hledger-test-error-multiline-no-position
+  '(
+    :expected-file nil
+    :expected-line nil
+    :expected-column nil
+    :expected-message "in CSV rules:
+record: 2022-01-03,1,2
+  %1   2022-01-03
+  %2   1
+  %3   2
+while calculating amount for posting 1
+rule \"amount-in %2\" assigned value \"1\"       (./file.csv.rules:3)
+rule \"amount-out %3\" assigned value \"2\"      (./file.csv.rules:4)
+
+Multiple non-zero amounts were assigned for an amount field.
+Please ensure just one non-zero amount is assigned, perhaps with an if rule.
+"
+    :output "hledger: Error: in CSV rules:
+record: 2022-01-03,1,2
+  %1   2022-01-03
+  %2   1
+  %3   2
+while calculating amount for posting 1
+rule \"amount-in %2\" assigned value \"1\"       (./file.csv.rules:3)
+rule \"amount-out %3\" assigned value \"2\"      (./file.csv.rules:4)
+
+Multiple non-zero amounts were assigned for an amount field.
+Please ensure just one non-zero amount is assigned, perhaps with an if rule.
+"))
+
 (defconst flycheck-hledger-test-error-symbols
   '(flycheck-hledger-test-error-standard-line
     flycheck-hledger-test-error-standard-line-column
@@ -276,7 +428,13 @@ expecting '+', '-', or number
     flycheck-hledger-test-error-standard-line-col-col-windows
     flycheck-hledger-test-error-excerpt-with-shuffled-line-numbers-windows
     flycheck-hledger-test-error-standard-line-with-context-windows
-    flycheck-hledger-test-compressed-error-windows))
+    flycheck-hledger-test-compressed-error-windows
+    flycheck-hledger-test-error-ordereddates-hledger1
+    flycheck-hledger-test-error-ordereddates-hledger2
+    flycheck-hledger-test-error-uniqueleafnames-hledger1
+    flycheck-hledger-test-error-uniqueleafnames-hledger2
+    flycheck-hledger-test-error-lots-hledger2
+    flycheck-hledger-test-error-multiline-no-position))
 
 (ert-deftest flycheck-hledger-test-error-patterns ()
   (let* ((error-patterns (flycheck-checker-get 'hledger 'error-patterns)))

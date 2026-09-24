@@ -3,8 +3,8 @@
 ;; Copyright (C) 2020-2023  Damien Cassou
 
 ;; Author: Damien Cassou <damien@cassou.me>
-;; Url: https://github.com/DamienCassou/flycheck-hledger/
-;; Package-requires: ((emacs "27.1") (flycheck "31"))
+;; URL: https://github.com/DamienCassou/flycheck-hledger/
+;; Package-Requires: ((emacs "27.1") (flycheck "31"))
 ;; Version: 0.3.0
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -40,9 +40,9 @@ See URL https://hledger.org/hledger.html#strict-mode"
 (flycheck-def-option-var flycheck-hledger-checks nil hledger
   "List of additional checks to run.
 
-Checks include: accounts, commodities, ordereddates, payees and
-uniqueleafnames.  More information at URL
-https://hledger.org/hledger.html#check."
+Checks include: accounts, commodities, payees, tags, ordereddates,
+recentassertions and uniqueleafnames; and in hledger 2, also basis.
+More information at URL https://hledger.org/hledger.html#check."
   :type '(repeat string))
 
 (defun flycheck-hledger--enabled-p ()
@@ -68,7 +68,7 @@ https://hledger.org/hledger.html#check."
   :error-patterns
   (
    ;; hledger error messages have changed over time. There was a significant cleanup in hledger 1.26.
-   ;; Here we try to support 2024's hledger 1.40 and up. Most error messages
+   ;; Here we try to support 2024's hledger 1.40 and up, including hledger 2. Most error messages
    ;; start with a line like "hledger: Error: PATH:LINE[-ENDLINE][:COL[-ENDCOL]]:",
    ;; followed by a multiline excerpt which we ignore here,
    ;; followed by one or more lines of explanation which we use as the flycheck message.
@@ -88,17 +88,20 @@ https://hledger.org/hledger.html#check."
    ;;     hledger reg -I 'a$' cur:
    ;; 
    ;; There are a few variations of this - some message are missing newlines etc.
+   ;; Some errors (ordereddates, uniqueleafnames) show two excerpts, separated by
+   ;; an empty line (hledger 2) or by a " " or " ..." line (hledger 1).
    (error
     bol "hledger" (optional ".exe") ": Error: " (file-name (optional alpha ":") (+ (not ":"))) ":" line (optional "-" end-line) (optional ":" column (optional "-" end-column)) ":\n"
-    (one-or-more  ; usually there's one excerpt, but ordereddates error shows two
+    (one-or-more  ; usually there's one excerpt, but ordereddates and uniqueleafnames errors show two
         (one-or-more (or (seq (one-or-more digit) " ") (>= 2 " ")) "|" (zero-or-more nonl) "\n")
-        (? "\n"))
+        (? (? " " (? "...")) "\n"))
     (message (one-or-more bol (zero-or-more nonl) (? "\n"))))
 
    ;; And there are still some error messages without position info. Eg:
    ;; hledger: Error: sorry, CSV files can't be included yet
+   ;; These can have several lines (eg CSV conversion errors); use all of them as the message.
    (error
-    bol "hledger" (optional ".exe") ": Error: " (message (one-or-more nonl) (? "\n")))))
+    bol "hledger" (optional ".exe") ": Error: " (message (one-or-more nonl) (zero-or-more "\n" (zero-or-more nonl))))))
 
 
 (add-to-list 'flycheck-checkers 'hledger)
