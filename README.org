@@ -4,17 +4,15 @@
 
 ** Summary
 
-This package is a [[https://www.flycheck.org/en/latest/][flycheck]] checker for [[https://hledger.org][hledger]] files. It
-supports hledger 1.40 and newer, including hledger 2 (and partially supports hledger 1.26+). If the package
-doesn't work for your version of hledger, try to update it and [[https://github.com/DamienCassou/flycheck-hledger/issues/new][open an
-issue]] if it still doesn't work.
+This package is a [[https://www.flycheck.org/en/latest/][flycheck]] checker for [[https://hledger.org][hledger]] files.
+It fully supports hledger 1.40+ and hledger 2, and partially supports hledger 1.26+.
 
 #+CAPTION: flycheck-hledger
 [[./media/screenshot.png]]
 
-This package is similar to [[https://github.com/DamienCassou/flymake-hledger][flymake-hledger]] except that the later
-relies on [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Flymake.html][Flymake]] which is built inside Emacs whereas Flycheck is a
-tool you have to install.
+This package is similar to [[https://github.com/DamienCassou/flymake-hledger][flymake-hledger]], except that the latter
+uses [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Flymake.html][Flymake]], which is built into Emacs, whereas Flycheck is a separate
+package you have to install.
 
 ** Installing
 
